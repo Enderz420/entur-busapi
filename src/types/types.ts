@@ -17,3 +17,8 @@ export interface Bus {
     }[];
   };
 }
+
+export interface BusTimes {
+  expectedDepartureTime: string;
+  aimedDepartureTime: string;
+}

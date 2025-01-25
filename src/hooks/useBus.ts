@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { BusTimes } from "../types/types";
 
 export const useBus = (url: string) => {
   return useQuery({
@@ -32,8 +33,17 @@ export const useBus = (url: string) => {
         },
         body: JSON.stringify({ query }),
       });
+      const result = await response.json();
+      const data = result.data;
 
-      return response.json();
+      data.stopPlace.estimatedCalls = data.stopPlace.estimatedCalls.map(
+        (call: BusTimes) => ({
+          ...call,
+          expectedDepartureTime: new Date(call.expectedDepartureTime),
+          aimedDepartureTime: new Date(call.aimedDepartureTime),
+        })
+      );
+      return data;
     },
     staleTime: 1000 * 60 * 60 * 24,
   });
