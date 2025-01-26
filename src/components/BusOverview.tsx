@@ -17,37 +17,52 @@ function BusOverview() {
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    date.setHours(date.getUTCHours() + 1); // Adjust to GMT+1
+    date.setHours(date.getUTCHours() + 1);
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
-    const seconds = date.getSeconds().toString().padStart(2, "0");
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours}:${minutes}`;
   };
 
   return (
-    <div className="grid grid-cols-5 mx-5 pt-10 gap-4">
-      <h1>Bus Overview</h1>
-      <h2>Stop Place: {busData.stopPlace.name}</h2>
-      <ul>
-        {busData.stopPlace.estimatedCalls.map((bus) => (
-          <li key={bus.expectedDepartureTime.toString()}>
-            <p>
-              <strong>Line:</strong> {bus.serviceJourney.line.publicCode}
-            </p>
-            <p>
-              <strong>Destination:</strong> {bus.destinationDisplay.frontText}
-            </p>
-            <p>
-              <strong>Expected Departure:</strong>{" "}
-              {formatTime(bus.expectedDepartureTime)}
-            </p>
-            <p>
-              <strong>Aimed Departure:</strong>{" "}
-              {formatTime(bus.aimedDepartureTime)}
-            </p>
-          </li>
-        ))}
-      </ul>
+    <div className="bg-stone-600 bg-cover h-screen">
+      <div className="flex items-center justify-center flex-col space-y-4 mx-5 pt-10 bg-stone-400 ">
+        <h1 className="rounded-xl shadow-xl bg-stone-300 backdrop-blur p-5">
+          Buss tabell
+        </h1>
+        <h2 className="bg-stone-300 rounded-2xl p-2 border-b-fuchsia-800 shadow-2xl">
+          Holdeplass: {busData.stopPlace.name}
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-black border-2 bg-stone-300">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b">Linje</th>
+                <th className="py-2 px-4 border-b">Til</th>
+                <th className="py-2 px-4 border-b">Planlagt</th>
+                <th className="py-2 px-4 border-b">Faktisk</th>
+              </tr>
+            </thead>
+            <tbody>
+              {busData.stopPlace.estimatedCalls.map((bus, index) => (
+                <tr key={index} className="hover:bg-rose-300">
+                  <td className="py-2 px-4 border-b">
+                    {bus.serviceJourney.line.publicCode}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {bus.destinationDisplay.frontText}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {formatTime(bus.expectedDepartureTime)}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {formatTime(bus.aimedDepartureTime)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

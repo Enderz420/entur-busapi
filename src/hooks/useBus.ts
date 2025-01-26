@@ -28,7 +28,7 @@ export const useBus = (url: string) => {
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          "ET-Client-Name": "awesomecompany-awesomeapp",
+          "ET-Client-Name": "enderz-bussapi",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ query }),
@@ -45,6 +45,7 @@ export const useBus = (url: string) => {
       );
       return data;
     },
-    staleTime: 1000 * 60 * 60 * 24,
+    staleTime: 1000 * 60 * 1,
+    refetchInterval: 1000 * 60 * 1,
   });
 };
